@@ -1,4 +1,4 @@
-# title: ReTa Assay Analysis and Visualization
+# title: NanoDSF Analysis and Visualization
 # author: Maike Cirksena
 # date: 04.03.2026
 
@@ -18,5 +18,6 @@ library("ggplot2")
 
 TableResults$Sample.ID <- as.factor(TableResults$Sample.ID)
 
+#Creating a boxplot for data vizualization
 boxplot(Inflection.Point ~ Sample.ID, data = TableResults, xlab = " ",
         ylab = "Denaturing Temperature [°C]", ylim = c(75,80))
