@@ -1,0 +1,72 @@
+# title: ReTa Assay Analysis and Visualization
+# author: Maike Cirksena
+# date: 30.01.2026
+
+
+
+
+#setting working directory
+getwd()
+setwd("xxx")
+getwd()
+
+#Data input
+TableResults <- read.csv2("Slopes.csv", na.strings=c("","NA"), dec=";")
+TableResults$Slope <- as.numeric(gsub(",", ".", TableResults$Slope))
+
+library("ggplot2")
+library("ggsignif")
+
+#Plotting data quickly as a boxplot for an overview
+ggplot(data=TableResults, aes(x= Group, y=Slope)) + geom_boxplot()
+
+#Creating an optimized boxplot that can be used in the master thesis
+ggplot(TableResults, aes(x = Group, y = Slope)) +
+  geom_boxplot(width = 0.5, position = position_dodge(0.7)) +
+  ggtitle("ReTA") +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
+    axis.title = element_text(size = 16),
+    axis.text  = element_text(size = 14),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 16)
+  ) + labs(x=NULL)
+ 
+
+#Comparing the DTT or H2O2 treated group with the standard H2O treated group using a two-sided t-test
+DTT17 <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("CHX17 C", "CHX17 C DTT")))
+H2O217 <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("CHX17 C", "CHX17 C H2O2")))
+
+DTT20 <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("CHX20 C", "CHX20 C DTT")))
+H2O220 <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("CHX20 C", "CHX20 C H2O2")))
+
+DTTSALT3 <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("GmSALT3 C", "GmSALT3 C DTT")))
+H2O2SALT3 <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("GmSALT3 C", "GmSALT3 C H2O2")))
+
+DTTGRXC4C <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("GRXC4 C", "GRXC4 C DTT")))
+H2O2GRXC4C <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("GRXC4 C", "GRXC4 C H2O2")))
+
+DTTGRXC4N <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("GRXC4 N", "GRXC4 N DTT")))
+H2O2GRXC4N <- t.test(Slope ~ Group, data = subset(TableResults, Group %in% c("GRXC4 N", "GRXC4 N H2O2")))
+
+# summerizing results in one table
+tests <- list(DTT17, H2O217, DTT20, H2O220, DTTSALT3, H2O2SALT3, DTTGRXC4C, H2O2GRXC4C, DTTGRXC4N, H2O2GRXC4N)
+results <- data.frame(
+  t_value = sapply(tests, function(x) x$statistic),
+  df = sapply(tests, function(x) x$parameter),
+  p_value = sapply(tests, function(x) x$p.value),
+  conf_low = sapply(tests, function(x) x$conf.int[1]),
+  conf_high = sapply(tests, function(x) x$conf.int[2])
+)
+
+library(dplyr)
+
+
+# Summerizing means and SD for each group in one table
+sdmean<- TableResults %>%
+  group_by(Group) %>%
+  summarise(
+    Mean = mean(Slope),
+    SD = sd(Slope))
