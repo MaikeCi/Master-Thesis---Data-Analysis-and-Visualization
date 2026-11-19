@@ -7,7 +7,7 @@
 
 #set working directory
 getwd()
-setwd("C:/Users/maike/Desktop/Uni/Master/module/Masterarbeit/Experimente/Water loss")
+setwd("xxx")
 getwd()
 
 #Data input
