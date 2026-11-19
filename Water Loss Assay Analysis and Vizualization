@@ -1,0 +1,43 @@
+# title: Water loss Assay Analysis ad Visualization
+# author: Maike Cirksena
+# date: 04.03.2026
+
+
+
+
+#set working directory
+getwd()
+setwd("C:/Users/maike/Desktop/Uni/Master/module/Masterarbeit/Experimente/Water loss")
+getwd()
+
+#Data input
+TableResults <- read.csv("TabelleR.csv", na.strings=c("","NA"), dec=",")
+
+#Comparsion of full plant weight (FW)
+boxplot(Full.Weight ~ Group, data = TableResults, xlab = " ",
+        ylab = "Plant Weight [g]")
+
+anova_model <- aov(Full.Weight ~ Group, data = TableResults)
+summary(anova_model)
+shapiro.test(residuals(anova_model))
+bartlett.test(Full.Weight ~ Group, data = TableResults)
+
+#Comparsion of Dry weight (DW)
+boxplot(Dry.Weight ~ Group, data = TableResults, xlab = " ",
+        ylab = "Dry Weight [g]")
+
+anova_model2 <- aov(Dry.Weight ~ Group, data = TableResults)
+summary(anova_model2)
+shapiro.test(residuals(anova_model2))
+bartlett.test(Dry.Weight ~ Group, data = TableResults)
+
+
+
+#Comparsion of Water content (=(FW-DW)/FW*100)
+boxplot(Water.Content ~ Group, data = TableResults, xlab = " ",
+        ylab = "Water Content [%]", ylim=c(91, 93))
+
+anova_model3 <- aov(Water.Content ~ Group, data = TableResults)
+summary(anova_model3)
+shapiro.test(residuals(anova_model3))
+bartlett.test(Water.Content ~ Group, data = TableResults)
