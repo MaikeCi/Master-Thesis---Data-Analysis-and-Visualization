@@ -1,2 +1,2 @@
 # Master-Thesis---Data-Analysis-and-Visualization
-For my Master Thesis I needed to analyze and vizualize some data. The code can be found in this Repository.
+For my Master Thesis I needed to analyze and vizualize some data from my experiments. The code can be found in this Repository. In order to keep details about my research project secret, only minimal amounts of information will be provided here. Three different R Scripts can be found, each for the data analysis and visualization of a different experiment: ReT Assay, NanoDSF based Assay and a Watter Loss assay. 
