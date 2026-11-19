@@ -1,0 +1,22 @@
+# title: ReTa Assay Analysis and Visualization
+# author: Maike Cirksena
+# date: 04.03.2026
+
+
+
+
+#set working directory
+getwd()
+setwd("xxx")
+getwd()
+
+#Data input
+#Use table saved as .csv
+TableResults <- read.csv("Results.csv", na.strings=c("","NA"), dec=",")
+
+library("ggplot2")
+
+TableResults$Sample.ID <- as.factor(TableResults$Sample.ID)
+
+boxplot(Inflection.Point ~ Sample.ID, data = TableResults, xlab = " ",
+        ylab = "Denaturing Temperature [°C]", ylim = c(75,80))
